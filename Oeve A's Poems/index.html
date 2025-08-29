@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>诗歌集 - 我的原创作品</title>
+    <title>宛信诗集 - 我的原创作品</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -263,8 +263,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>诗歌集</h1>
-            <p class="subtitle">我的原创诗歌作品</p>
+            <h1>宛信诗集</h1>
         </header>
         
         <div class="poem-viewer">
@@ -320,19 +319,18 @@
         const printBtn = document.getElementById('printBtn');
         const shareBtn = document.getElementById('shareBtn');
         
-        // 模拟从服务器获取诗歌文件列表
-        // 在实际应用中，您应该从服务器API获取文件列表
+        // 暂不从服务器API获取文件列表
         const poemFiles = [
-            '表格.txt',
-            '发到付.txt',
-            '速度.txt',
-            '夜思.txt',
+            '测试文件1.txt',
+            '测试文件2.txt',
+            '测试文件3.txt',
+            '测试文件4.txt',
         ];
         
         // 从服务器加载诗歌内容
         async function loadPoemFromFile(filename) {
             try {
-                // 假设诗歌文件放在explore/poems/目录下
+                // 假设诗歌文件放在Oeve A's Poems/poems/目录下
                 const response = await fetch(`poems/${filename}`);
                 if (!response.ok) {
                     throw new Error('文件加载失败');
