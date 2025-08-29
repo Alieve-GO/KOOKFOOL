@@ -20,6 +20,9 @@
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         header {
@@ -42,26 +45,85 @@
             font-style: italic;
         }
         
+        .poems-viewer {
+            position: relative;
+            margin: 40px 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .navigation-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .arrow {
+            pointer-events: all;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #5d4037;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            margin: 0 20px;
+        }
+        
+        .arrow:hover {
+            background-color: #5d4037;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .arrow.disabled:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #5d4037;
+            transform: none;
+        }
+        
         .poems-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex;
+            justify-content: center;
             gap: 25px;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
+            min-height: 400px;
         }
         
         .poem-card {
             background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             padding: 25px;
+            width: 350px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             border-left: 4px solid #a1887f;
+            display: flex;
+            flex-direction: column;
         }
         
         .poem-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
         
         .poem-title {
@@ -69,38 +131,50 @@
             color: #5d4037;
             margin-bottom: 15px;
             font-weight: 500;
+            border-bottom: 1px solid #e0dcd5;
+            padding-bottom: 10px;
         }
         
-        .poem-date {
-            color: #9e9e9e;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-        
-        .poem-preview {
+        .poem-content {
             color: #616161;
             font-size: 1rem;
             line-height: 1.8;
-            margin-bottom: 20px;
             white-space: pre-line;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 8;
+            -webkit-box-orient: vertical;
         }
         
-        .read-more {
+        .view-full {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .view-full-btn {
             color: #8d6e63;
             text-decoration: none;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
+            font-size: 0.9rem;
         }
         
-        .read-more i {
+        .view-full-btn i {
             margin-left: 5px;
             transition: transform 0.3s ease;
         }
         
-        .read-more:hover i {
+        .view-full-btn:hover i {
             transform: translateX(3px);
+        }
+        
+        .page-indicator {
+            text-align: center;
+            color: #8d6e63;
+            font-size: 1rem;
+            margin-top: 20px;
         }
         
         .poem-modal {
@@ -175,14 +249,34 @@
             text-align: center;
             padding: 30px 0;
             color: #9e9e9e;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px solid #e0dcd5;
+            margin-top: auto;
         }
         
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 40px;
             color: #8d6e63;
+            font-size: 1.2rem;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #d32f2f;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .poems-container {
+                flex-wrap: wrap;
+            }
+            
+            .poem-card {
+                width: 100%;
+                max-width: 500px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -190,8 +284,11 @@
                 font-size: 2rem;
             }
             
-            .poems-container {
-                grid-template-columns: 1fr;
+            .arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                margin: 0 10px;
             }
             
             .modal-content {
@@ -206,36 +303,24 @@
         <p class="subtitle">我的原创诗歌作品</p>
     </header>
     
-    <div class="poems-container">
-        <!-- 诗歌卡片 -->
-        <div class="poem-card" data-poem-file="poem1.txt">
-            <h2 class="poem-title">春之希望</h2>
-            <span class="poem-date">2023年3月15日</span>
-            <div class="poem-preview">春风轻拂过原野，
-万物复苏生机盎然，
-我听见远方的呼唤，
-那是希望的声音……</div>
-            <a class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+    <div class="poems-viewer">
+        <div class="navigation-arrows">
+            <div class="arrow left-arrow disabled" id="leftArrow">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="arrow right-arrow" id="rightArrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
         </div>
         
-        <div class="poem-card" data-poem-file="poem2.txt">
-            <h2 class="poem-title">夜思</h2>
-            <span class="poem-date">2023年5月22日</span>
-            <div class="poem-preview">夜深人静时，
-思绪如潮水般涌来，
-星光点点照亮心房，
-我在寂静中寻找答案……</div>
-            <a class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+        <div class="poems-container" id="poemsContainer">
+            <div class="loading" id="loadingIndicator">
+                <i class="fas fa-spinner fa-spin"></i> 诗歌加载中...
+            </div>
         </div>
         
-        <div class="poem-card" data-poem-file="poem3.txt">
-            <h2 class="poem-title">归途</h2>
-            <span class="poem-date">2023年8月10日</span>
-            <div class="poem-preview">夕阳西下，
-我踏上归途，
-路旁的野花向我点头，
-仿佛在诉说家的温暖……</div>
-            <a class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+        <div class="page-indicator" id="pageIndicator">
+            第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">1</span> 页
         </div>
     </div>
     
@@ -243,8 +328,6 @@
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
             <h2 class="poem-title" id="modalTitle"></h2>
-            <span class="poem-date" id="modalDate"></span>
-            <div class="loading" id="loadingIndicator">诗歌加载中...</div>
             <div class="full-poem" id="modalContent"></div>
             <div class="poem-actions">
                 <button class="action-btn" id="closeBtn">关闭</button>
@@ -258,17 +341,35 @@
     </footer>
 
     <script>
+        // 诗歌数据存储
+        let allPoems = [];
+        let currentPage = 1;
+        const poemsPerPage = 3;
+        
         // 获取DOM元素
-        const poemCards = document.querySelectorAll('.poem-card');
+        const poemsContainer = document.getElementById('poemsContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const leftArrow = document.getElementById('leftArrow');
+        const rightArrow = document.getElementById('rightArrow');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const currentPageElement = document.getElementById('currentPage');
+        const totalPagesElement = document.getElementById('totalPages');
         const poemModal = document.getElementById('poemModal');
         const modalTitle = document.getElementById('modalTitle');
-        const modalDate = document.getElementById('modalDate');
         const modalContent = document.getElementById('modalContent');
-        const loadingIndicator = document.getElementById('loadingIndicator');
         const closeModalBtn = document.getElementById('closeModal');
         const closeBtn = document.getElementById('closeBtn');
         const printBtn = document.getElementById('printBtn');
-
+        
+        // 模拟从服务器获取诗歌文件列表
+        // 在实际应用中，您应该从服务器API获取文件列表
+        const poemFiles = [
+            '表格.txt',
+            '发到付.txt',
+            '速度.txt',
+            '夜思.txt',
+        ];
+        
         // 从服务器加载诗歌内容
         async function loadPoemFromFile(filename) {
             try {
@@ -277,105 +378,193 @@
                 if (!response.ok) {
                     throw new Error('文件加载失败');
                 }
-                return await response.text();
+                const content = await response.text();
+                
+                // 解析诗歌内容：第一行为标题，其余为内容
+                const lines = content.split('\n');
+                const title = lines[0].trim();
+                const poemContent = lines.slice(1).join('\n').trim();
+                
+                return {
+                    title,
+                    content: poemContent,
+                    filename
+                };
             } catch (error) {
                 console.error('Error loading poem:', error);
-                return '无法加载诗歌内容，请稍后再试。';
+                return {
+                    title: `诗歌加载失败 (${filename})`,
+                    content: '无法加载诗歌内容，请稍后再试。',
+                    filename
+                };
             }
         }
-
-        // 为每张诗歌卡片添加点击事件
-        poemCards.forEach(card => {
-            card.addEventListener('click', async () => {
-                const poemFile = card.getAttribute('data-poem-file');
-                const title = card.querySelector('.poem-title').textContent;
-                const date = card.querySelector('.poem-date').textContent;
-                
-                // 更新模态框标题和日期
-                modalTitle.textContent = title;
-                modalDate.textContent = date;
-                
-                // 显示加载指示器，隐藏内容区域
+        
+        // 加载所有诗歌
+        async function loadAllPoems() {
+            try {
                 loadingIndicator.style.display = 'block';
-                modalContent.style.display = 'none';
+                poemsContainer.innerHTML = '';
+                poemsContainer.appendChild(loadingIndicator);
                 
-                // 显示模态框
-                poemModal.style.display = 'flex';
+                const poemPromises = poemFiles.map(filename => loadPoemFromFile(filename));
+                allPoems = await Promise.all(poemPromises);
                 
-                try {
-                    // 从服务器加载诗歌内容
-                    const content = await loadPoemFromFile(poemFile);
-                    
-                    // 隐藏加载指示器，显示内容区域
-                    loadingIndicator.style.display = 'none';
-                    modalContent.style.display = 'block';
-                    
-                    // 更新模态框内容
-                    modalContent.textContent = content;
-                } catch (error) {
-                    // 隐藏加载指示器，显示内容区域
-                    loadingIndicator.style.display = 'none';
-                    modalContent.style.display = 'block';
-                    
-                    // 显示错误信息
-                    modalContent.textContent = '无法加载诗歌内容，请稍后再试。';
-                    console.error('Error loading poem:', error);
-                }
+                // 计算总页数
+                const totalPages = Math.ceil(allPoems.length / poemsPerPage);
+                totalPagesElement.textContent = totalPages;
+                
+                // 显示第一页
+                showPage(1);
+                
+            } catch (error) {
+                console.error('Error loading poems:', error);
+                poemsContainer.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-circle"></i> 诗歌加载失败，请刷新页面重试。
+                    </div>
+                `;
+            }
+        }
+        
+        // 显示指定页的诗歌
+        function showPage(page) {
+            // 更新当前页
+            currentPage = page;
+            currentPageElement.textContent = page;
+            
+            // 计算当前页的诗歌范围
+            const startIndex = (page - 1) * poemsPerPage;
+            const endIndex = Math.min(startIndex + poemsPerPage, allPoems.length);
+            const pagePoems = allPoems.slice(startIndex, endIndex);
+            
+            // 清空容器
+            poemsContainer.innerHTML = '';
+            
+            // 添加诗歌卡片
+            pagePoems.forEach(poem => {
+                const poemCard = document.createElement('div');
+                poemCard.className = 'poem-card';
+                poemCard.innerHTML = `
+                    <h2 class="poem-title">${poem.title}</h2>
+                    <div class="poem-content">${poem.content}</div>
+                    <div class="view-full">
+                        <a class="view-full-btn" data-filename="${poem.filename}">
+                            阅读全文 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                poemsContainer.appendChild(poemCard);
+                
+                // 添加点击事件
+                const viewFullBtn = poemCard.querySelector('.view-full-btn');
+                viewFullBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showFullPoem(poem);
+                });
             });
-        });
-
+            
+            // 更新箭头状态
+            updateArrows();
+        }
+        
+        // 更新箭头状态
+        function updateArrows() {
+            const totalPages = Math.ceil(allPoems.length / poemsPerPage);
+            
+            // 左箭头
+            if (currentPage <= 1) {
+                leftArrow.classList.add('disabled');
+            } else {
+                leftArrow.classList.remove('disabled');
+            }
+            
+            // 右箭头
+            if (currentPage >= totalPages) {
+                rightArrow.classList.add('disabled');
+            } else {
+                rightArrow.classList.remove('disabled');
+            }
+        }
+        
+        // 显示完整诗歌
+        function showFullPoem(poem) {
+            modalTitle.textContent = poem.title;
+            modalContent.textContent = poem.content;
+            poemModal.style.display = 'flex';
+        }
+        
         // 关闭模态框
         function closeModal() {
             poemModal.style.display = 'none';
         }
-
-        closeModalBtn.addEventListener('click', closeModal);
-        closeBtn.addEventListener('click', closeModal);
         
-        // 点击模态框背景关闭
-        poemModal.addEventListener('click', (e) => {
-            if (e.target === poemModal) {
-                closeModal();
-            }
-        });
-        
-        // 打印功能
-        printBtn.addEventListener('click', () => {
-            const printContent = modalContent.textContent;
-            const title = modalTitle.textContent;
-            const date = modalDate.textContent;
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 加载所有诗歌
+            loadAllPoems();
             
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>打印：${title}</title>
-                    <style>
-                        body { 
-                            font-family: 'Noto Sans SC', sans-serif; 
-                            line-height: 1.8;
-                            padding: 40px;
-                            color: #333;
-                        }
-                        h1 { color: #5d4037; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-                        .date { color: #777; margin-bottom: 30px; }
-                        .content { white-space: pre-wrap; font-size: 1.1rem; }
-                        @media print {
-                            body { padding: 0; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>${title}</h1>
-                    <div class="date">${date}</div>
-                    <div class="content">${printContent}</div>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
+            // 左箭头点击事件
+            leftArrow.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    showPage(currentPage - 1);
+                }
+            });
+            
+            // 右箭头点击事件
+            rightArrow.addEventListener('click', () => {
+                const totalPages = Math.ceil(allPoems.length / poemsPerPage);
+                if (currentPage < totalPages) {
+                    showPage(currentPage + 1);
+                }
+            });
+            
+            // 关闭模态框
+            closeModalBtn.addEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+            
+            // 点击模态框背景关闭
+            poemModal.addEventListener('click', (e) => {
+                if (e.target === poemModal) {
+                    closeModal();
+                }
+            });
+            
+            // 打印功能
+            printBtn.addEventListener('click', () => {
+                const printContent = modalContent.textContent;
+                const title = modalTitle.textContent;
+                
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>打印：${title}</title>
+                        <style>
+                            body { 
+                                font-family: 'Noto Sans SC', sans-serif; 
+                                line-height: 1.8;
+                                padding: 40px;
+                                color: #333;
+                            }
+                            h1 { color: #5d4037; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+                            .content { white-space: pre-wrap; font-size: 1.1rem; }
+                            @media print {
+                                body { padding: 0; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>${title}</h1>
+                        <div class="content">${printContent}</div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+            });
         });
     </script>
 </body>
