@@ -14,79 +14,86 @@
         }
         
         body {
-            background-color: #f8f6f2;
+            background: linear-gradient(135deg, #f8f6f2 0%, #e8e6e1 100%);
             color: #333;
             line-height: 1.6;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
         }
         
         header {
             text-align: center;
-            padding: 40px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #e0dcd5;
+            padding: 30px 0;
+            margin-bottom: 20px;
+            width: 100%;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: #5d4037;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: 400;
+            letter-spacing: 1px;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #8d6e63;
             font-style: italic;
+            margin-bottom: 30px;
         }
         
-        .poems-viewer {
+        .poem-viewer {
+            width: 100%;
+            max-width: 700px;
             position: relative;
-            margin: 40px 0;
+            margin: 30px 0;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         
-        .navigation-arrows {
+        .navigation-container {
             display: flex;
             justify-content: space-between;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            transform: translateY(-50%);
-            z-index: 10;
-            pointer-events: none;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 25px;
         }
         
         .arrow {
-            pointer-events: all;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(161, 136, 127, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #5d4037;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
-            margin: 0 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
         
         .arrow:hover {
-            background-color: #5d4037;
-            color: white;
-            transform: scale(1.1);
+            background-color: rgba(161, 136, 127, 0.2);
+            transform: scale(1.05);
         }
         
         .arrow.disabled {
@@ -95,271 +102,223 @@
         }
         
         .arrow.disabled:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #5d4037;
+            background-color: rgba(161, 136, 127, 0.1);
             transform: none;
-        }
-        
-        .poems-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 30px;
-            min-height: 400px;
         }
         
         .poem-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            padding: 25px;
-            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            border-left: 4px solid #a1887f;
+            border-left: 5px solid #a1887f;
+            text-align: center;
+            min-height: 450px;
             display: flex;
             flex-direction: column;
-        }
-        
-        .poem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            justify-content: center;
         }
         
         .poem-title {
-            font-size: 1.4rem;
+            font-size: 2rem;
             color: #5d4037;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             font-weight: 500;
+            padding-bottom: 15px;
             border-bottom: 1px solid #e0dcd5;
-            padding-bottom: 10px;
         }
         
         .poem-content {
             color: #616161;
-            font-size: 1rem;
-            line-height: 1.8;
-            white-space: pre-line;
-            flex-grow: 1;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 8;
-            -webkit-box-orient: vertical;
-        }
-        
-        .view-full {
-            margin-top: 20px;
+            font-size: 1.2rem;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            margin: 0 auto;
+            max-width: 90%;
             text-align: center;
-        }
-        
-        .view-full-btn {
-            color: #8d6e63;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-        
-        .view-full-btn i {
-            margin-left: 5px;
-            transition: transform 0.3s ease;
-        }
-        
-        .view-full-btn:hover i {
-            transform: translateX(3px);
         }
         
         .page-indicator {
             text-align: center;
             color: #8d6e63;
-            font-size: 1rem;
-            margin-top: 20px;
-        }
-        
-        .poem-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .modal-content {
-            background-color: white;
-            max-width: 700px;
-            width: 100%;
-            border-radius: 10px;
-            padding: 40px;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #9e9e9e;
-            transition: color 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            color: #5d4037;
-        }
-        
-        .full-poem {
-            white-space: pre-wrap;
             font-size: 1.1rem;
-            line-height: 1.8;
-            color: #424242;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: rgba(161, 136, 127, 0.1);
+            border-radius: 25px;
+            width: fit-content;
+            margin: 30px auto;
         }
         
         .poem-actions {
             display: flex;
             justify-content: center;
-            margin-top: 30px;
             gap: 15px;
+            margin-top: 30px;
         }
         
         .action-btn {
             background: transparent;
             border: 1px solid #d7ccc8;
-            padding: 8px 15px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 25px;
             cursor: pointer;
             color: #5d4037;
             transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .action-btn:hover {
             background: #5d4037;
             color: white;
+            border-color: #5d4037;
         }
         
         footer {
             text-align: center;
-            padding: 30px 0;
+            padding: 25px 0;
             color: #9e9e9e;
-            font-size: 0.85rem;
-            border-top: 1px solid #e0dcd5;
-            margin-top: auto;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 40px;
         }
         
         .loading {
             text-align: center;
             padding: 40px;
             color: #8d6e63;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         
         .error {
             text-align: center;
             padding: 40px;
             color: #d32f2f;
-            font-size: 1.2rem;
-        }
-        
-        @media (max-width: 1200px) {
-            .poems-container {
-                flex-wrap: wrap;
-            }
-            
-            .poem-card {
-                width: 100%;
-                max-width: 500px;
-            }
+            font-size: 1.3rem;
         }
         
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
             }
             
             .arrow {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                margin: 0 10px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
             }
             
-            .modal-content {
+            .poem-card {
                 padding: 30px 20px;
+                min-height: 380px;
+            }
+            
+            .poem-title {
+                font-size: 1.7rem;
+            }
+            
+            .poem-content {
+                font-size: 1.1rem;
+                line-height: 1.8;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.9rem;
+            }
+            
+            .poem-card {
+                padding: 25px 15px;
+                min-height: 350px;
+            }
+            
+            .poem-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .poem-content {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            
+            .arrow {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>诗歌集</h1>
-        <p class="subtitle">我的原创诗歌作品</p>
-    </header>
-    
-    <div class="poems-viewer">
-        <div class="navigation-arrows">
-            <div class="arrow left-arrow disabled" id="leftArrow">
-                <i class="fas fa-chevron-left"></i>
-            </div>
-            <div class="arrow right-arrow" id="rightArrow">
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </div>
+    <div class="container">
+        <header>
+            <h1>诗歌集</h1>
+            <p class="subtitle">我的原创诗歌作品</p>
+        </header>
         
-        <div class="poems-container" id="poemsContainer">
-            <div class="loading" id="loadingIndicator">
-                <i class="fas fa-spinner fa-spin"></i> 诗歌加载中...
+        <div class="poem-viewer">
+            <div class="navigation-container">
+                <div class="arrow left-arrow" id="leftArrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                
+                <div class="poem-card" id="poemCard">
+                    <div class="loading" id="loadingIndicator">
+                        <i class="fas fa-spinner fa-spin"></i><br>
+                        <span style="margin-top: 15px; display: inline-block;">诗歌加载中...</span>
+                    </div>
+                </div>
+                
+                <div class="arrow right-arrow" id="rightArrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </div>
-        </div>
-        
-        <div class="page-indicator" id="pageIndicator">
-            第 <span id="currentPage">1</span> 页 / 共 <span id="totalPages">1</span> 页
-        </div>
-    </div>
-    
-    <div class="poem-modal" id="poemModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h2 class="poem-title" id="modalTitle"></h2>
-            <div class="full-poem" id="modalContent"></div>
+            
+            <div class="page-indicator" id="pageIndicator">
+                第 <span id="currentPage">1</span> 首 / 共 <span id="totalPoems">0</span> 首
+            </div>
+            
             <div class="poem-actions">
-                <button class="action-btn" id="closeBtn">关闭</button>
-                <button class="action-btn" id="printBtn">打印</button>
+                <button class="action-btn" id="printBtn">
+                    <i class="fas fa-print"></i> 打印
+                </button>
+                <button class="action-btn" id="shareBtn">
+                    <i class="fas fa-share-alt"></i> 分享
+                </button>
             </div>
         </div>
+        
+        <footer>
+            <p>All Rights Reserved © 2025</p>
+        </footer>
     </div>
-    
-    <footer>
-        <p>All Rights Reserved © 2025</p>
-    </footer>
 
     <script>
         // 诗歌数据存储
         let allPoems = [];
-        let currentPage = 1;
-        const poemsPerPage = 3;
+        let currentPoemIndex = 0;
         
         // 获取DOM元素
-        const poemsContainer = document.getElementById('poemsContainer');
+        const poemCard = document.getElementById('poemCard');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const leftArrow = document.getElementById('leftArrow');
         const rightArrow = document.getElementById('rightArrow');
         const pageIndicator = document.getElementById('pageIndicator');
         const currentPageElement = document.getElementById('currentPage');
-        const totalPagesElement = document.getElementById('totalPages');
-        const poemModal = document.getElementById('poemModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
-        const closeModalBtn = document.getElementById('closeModal');
-        const closeBtn = document.getElementById('closeBtn');
+        const totalPoemsElement = document.getElementById('totalPoems');
         const printBtn = document.getElementById('printBtn');
+        const shareBtn = document.getElementById('shareBtn');
         
         // 模拟从服务器获取诗歌文件列表
         // 在实际应用中，您应该从服务器API获取文件列表
@@ -404,65 +363,42 @@
         async function loadAllPoems() {
             try {
                 loadingIndicator.style.display = 'block';
-                poemsContainer.innerHTML = '';
-                poemsContainer.appendChild(loadingIndicator);
                 
                 const poemPromises = poemFiles.map(filename => loadPoemFromFile(filename));
                 allPoems = await Promise.all(poemPromises);
                 
-                // 计算总页数
-                const totalPages = Math.ceil(allPoems.length / poemsPerPage);
-                totalPagesElement.textContent = totalPages;
+                // 更新总诗歌数
+                totalPoemsElement.textContent = allPoems.length;
                 
-                // 显示第一页
-                showPage(1);
+                // 显示第一首诗
+                showPoem(0);
                 
             } catch (error) {
                 console.error('Error loading poems:', error);
-                poemsContainer.innerHTML = `
+                poemCard.innerHTML = `
                     <div class="error">
-                        <i class="fas fa-exclamation-circle"></i> 诗歌加载失败，请刷新页面重试。
+                        <i class="fas fa-exclamation-circle"></i><br>
+                        <span style="margin-top: 15px; display: inline-block;">诗歌加载失败，请刷新页面重试。</span>
                     </div>
                 `;
             }
         }
         
-        // 显示指定页的诗歌
-        function showPage(page) {
-            // 更新当前页
-            currentPage = page;
-            currentPageElement.textContent = page;
+        // 显示指定索引的诗歌
+        function showPoem(index) {
+            if (index < 0 || index >= allPoems.length) return;
             
-            // 计算当前页的诗歌范围
-            const startIndex = (page - 1) * poemsPerPage;
-            const endIndex = Math.min(startIndex + poemsPerPage, allPoems.length);
-            const pagePoems = allPoems.slice(startIndex, endIndex);
+            currentPoemIndex = index;
+            const poem = allPoems[index];
             
-            // 清空容器
-            poemsContainer.innerHTML = '';
+            // 更新页面指示器
+            currentPageElement.textContent = index + 1;
             
-            // 添加诗歌卡片
-            pagePoems.forEach(poem => {
-                const poemCard = document.createElement('div');
-                poemCard.className = 'poem-card';
-                poemCard.innerHTML = `
-                    <h2 class="poem-title">${poem.title}</h2>
-                    <div class="poem-content">${poem.content}</div>
-                    <div class="view-full">
-                        <a class="view-full-btn" data-filename="${poem.filename}">
-                            阅读全文 <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-                poemsContainer.appendChild(poemCard);
-                
-                // 添加点击事件
-                const viewFullBtn = poemCard.querySelector('.view-full-btn');
-                viewFullBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showFullPoem(poem);
-                });
-            });
+            // 更新诗歌卡片内容
+            poemCard.innerHTML = `
+                <h2 class="poem-title">${poem.title}</h2>
+                <div class="poem-content">${poem.content}</div>
+            `;
             
             // 更新箭头状态
             updateArrows();
@@ -470,33 +406,90 @@
         
         // 更新箭头状态
         function updateArrows() {
-            const totalPages = Math.ceil(allPoems.length / poemsPerPage);
-            
             // 左箭头
-            if (currentPage <= 1) {
+            if (currentPoemIndex <= 0) {
                 leftArrow.classList.add('disabled');
             } else {
                 leftArrow.classList.remove('disabled');
             }
             
             // 右箭头
-            if (currentPage >= totalPages) {
+            if (currentPoemIndex >= allPoems.length - 1) {
                 rightArrow.classList.add('disabled');
             } else {
                 rightArrow.classList.remove('disabled');
             }
         }
         
-        // 显示完整诗歌
-        function showFullPoem(poem) {
-            modalTitle.textContent = poem.title;
-            modalContent.textContent = poem.content;
-            poemModal.style.display = 'flex';
+        // 打印功能
+        function printPoem() {
+            const poem = allPoems[currentPoemIndex];
+            const printContent = poem.content;
+            const title = poem.title;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>打印：${title}</title>
+                    <style>
+                        body { 
+                            font-family: 'Noto Sans SC', sans-serif; 
+                            line-height: 1.9;
+                            padding: 40px;
+                            color: #333;
+                            text-align: center;
+                        }
+                        h1 { 
+                            color: #5d4037; 
+                            border-bottom: 1px solid #ddd; 
+                            padding-bottom: 15px;
+                            margin-bottom: 30px;
+                            font-size: 2rem;
+                        }
+                        .content { 
+                            white-space: pre-wrap; 
+                            font-size: 1.3rem;
+                            max-width: 700px;
+                            margin: 0 auto;
+                        }
+                        @media print {
+                            body { padding: 15mm; }
+                        }
+                        @page {
+                            size: auto;
+                            margin: 15mm;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${title}</h1>
+                    <div class="content">${printContent}</div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
         }
         
-        // 关闭模态框
-        function closeModal() {
-            poemModal.style.display = 'none';
+        // 分享功能
+        function sharePoem() {
+            const poem = allPoems[currentPoemIndex];
+            if (navigator.share) {
+                navigator.share({
+                    title: poem.title,
+                    text: poem.content.substring(0, 100) + '...',
+                    url: window.location.href
+                })
+                .catch(error => {
+                    console.log('分享失败:', error);
+                    alert('分享功能在此浏览器中不受支持，您可以手动复制诗歌内容进行分享。');
+                });
+            } else {
+                alert('分享功能在此浏览器中不受支持，您可以手动复制诗歌内容进行分享。');
+            }
         }
         
         // 初始化
@@ -506,64 +499,31 @@
             
             // 左箭头点击事件
             leftArrow.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    showPage(currentPage - 1);
+                if (currentPoemIndex > 0) {
+                    showPoem(currentPoemIndex - 1);
                 }
             });
             
             // 右箭头点击事件
             rightArrow.addEventListener('click', () => {
-                const totalPages = Math.ceil(allPoems.length / poemsPerPage);
-                if (currentPage < totalPages) {
-                    showPage(currentPage + 1);
+                if (currentPoemIndex < allPoems.length - 1) {
+                    showPoem(currentPoemIndex + 1);
                 }
             });
             
-            // 关闭模态框
-            closeModalBtn.addEventListener('click', closeModal);
-            closeBtn.addEventListener('click', closeModal);
+            // 打印按钮点击事件
+            printBtn.addEventListener('click', printPoem);
             
-            // 点击模态框背景关闭
-            poemModal.addEventListener('click', (e) => {
-                if (e.target === poemModal) {
-                    closeModal();
+            // 分享按钮点击事件
+            shareBtn.addEventListener('click', sharePoem);
+            
+            // 键盘导航支持
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentPoemIndex > 0) {
+                    showPoem(currentPoemIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentPoemIndex < allPoems.length - 1) {
+                    showPoem(currentPoemIndex + 1);
                 }
-            });
-            
-            // 打印功能
-            printBtn.addEventListener('click', () => {
-                const printContent = modalContent.textContent;
-                const title = modalTitle.textContent;
-                
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>打印：${title}</title>
-                        <style>
-                            body { 
-                                font-family: 'Noto Sans SC', sans-serif; 
-                                line-height: 1.8;
-                                padding: 40px;
-                                color: #333;
-                            }
-                            h1 { color: #5d4037; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-                            .content { white-space: pre-wrap; font-size: 1.1rem; }
-                            @media print {
-                                body { padding: 0; }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <h1>${title}</h1>
-                        <div class="content">${printContent}</div>
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.focus();
-                printWindow.print();
             });
         });
     </script>
