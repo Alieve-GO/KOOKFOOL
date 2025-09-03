@@ -474,47 +474,84 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
         }
         
         // 中文智能断字函数
-        function hyphenateChineseText(text, maxLineLength = 15) {
-            if (!text || text.length === 0) return text;
+        function hyphenateChinesePoem(text, maxLineLength = 15) {
+           if (!text || text.length === 0) return text;
             
-            // 中文标点符号（不需要在标点前断字）
+           // 中文标点符号（不需要在标点前断字）
             const punctuation = '，。！？；：「」『』【】、（）《》';
             
+            // 按原诗行分割
+            const originalLines = text.split('\n');
             let result = '';
-            let currentLine = '';
-            
-            // 遍历每个字符
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                currentLine += char;
+    
+            // 逐行处理
+            for (let lineIndex = 0; lineIndex < originalLines.length; lineIndex++) {
+                const line = originalLines[lineIndex].trim();
                 
-                // 检查是否需要换行
-                if (currentLine.length >= maxLineLength) {
-                    // 如果当前字符是标点，直接换行
-                    if (punctuation.includes(char)) {
-                        result += currentLine + '\n';
-                        currentLine = '';
-                    } 
-                    // 否则在字符后添加连字符并换行
-                    else {
-                        // 检查下一个字符是否是标点，如果是则不添加连字符
-                        if (i + 1 < text.length && punctuation.includes(text[i + 1])) {
-                            result += currentLine + '\n';
-                            currentLine = '';
-                        } else {
-                            result += currentLine + '-\n';
-                            currentLine = '';
+                // 空行保留
+                if (line.length === 0) {
+                    result += '\n';
+                    continue;
+                }
+        
+                // 如果行长度不超过限制，保留原行
+                if (line.length <= maxLineLength) {
+                    result += line + '\n';
+                    continue;
+                }
+                
+                // 处理超长行 - 智能断字
+                let processedLine = '';
+                let currentSegment = '';
+                
+               // 按字符处理
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    currentSegment += char;
+                    
+                    // 检查是否需要断字
+                    if (currentSegment.length >= maxLineLength) {
+                        // 如果当前字符是标点，直接换行
+                        if (punctuation.includes(char)) {
+                            processedLine += currentSegment + '\n';
+                            currentSegment = '';
+                        } 
+                        // 否则在字符后添加连字符并换行
+                       else {
+                            // 检查下一个字符是否是标点，如果是则不添加连字符
+                            if (i + 1 < line.length && punctuation.includes(line[i + 1])) {
+                                processedLine += currentSegment + '\n';
+                                currentSegment = '';
+                            } else {
+                                processedLine += currentSegment + '-\n';
+                                currentSegment = '';
+                            }
                         }
                     }
                 }
-            }
-            
-            // 添加最后一行
-            if (currentLine) {
-                result += currentLine;
+        
+                // 添加当前段的剩余部分
+                if (currentSegment) {
+                    processedLine += currentSegment;
+                }
+                
+                result += processedLine;
+                
+                // 如果不是最后一行，添加换行符
+                if (lineIndex < originalLines.length - 1) {
+                    result += '\n';
+                }
             }
             
             return result;
+        }
+                    
+                    // 添加最后一行
+                    if (currentLine) {
+                        result += currentLine;
+                    }
+                    
+                    return result;
         }
         
         // 加载所有诗歌
