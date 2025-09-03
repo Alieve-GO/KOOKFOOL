@@ -173,7 +173,11 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             margin: 0 auto;
             max-width: 90%;
             text-align: center;
+            hyphens: auto; /* 启用CSS自动断字 */
+            -webkit-hyphens: auto; /* Safari 和 iOS */
+            -ms-hyphens: auto; /* Internet Explorer */
             word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         .page-indicator {
