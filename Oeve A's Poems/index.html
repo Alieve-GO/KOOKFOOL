@@ -173,9 +173,6 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             margin: 0 auto;
             max-width: 90%;
             text-align: center;
-            hyphens: auto; /* 启用CSS自动断字 */
-            -webkit-hyphens: auto; /* Safari 和 iOS */
-            -ms-hyphens: auto; /* Internet Explorer */
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
@@ -217,6 +214,68 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             background: #5d4037;
             color: white;
             border-color: #5d4037;
+        }
+        
+        .hyphenation-control {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .hyphenation-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: #8d6e63;
+            font-size: 0.9rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            margin-right: 8px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #5d4037;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(20px);
         }
         
         footer {
@@ -297,6 +356,11 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
                 height: 45px;
                 font-size: 1.3rem;
             }
+            
+            .poem-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -328,6 +392,16 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
                 第 <span id="currentPage">1</span> 首 / 共 <span id="totalPoems">0</span> 首
             </div>
             
+            <div class="hyphenation-control">
+                <label class="hyphenation-toggle">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="hyphenationToggle" checked>
+                        <span class="slider"></span>
+                    </div>
+                    智能断字
+                </label>
+            </div>
+            
             <div class="poem-actions">
                 <button class="action-btn" id="printBtn">
                     <i class="fas fa-print"></i> 打印
@@ -337,12 +411,17 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
                 </button>
             </div>
         </div>
+        
+        <footer>
+            <p>All Rights Reserved © 2025</p>
+        </footer>
     </div>
 
     <script>
         // 诗歌数据存储
         let allPoems = [];
         let currentPoemIndex = 0;
+        let hyphenationEnabled = true;
         
         // 获取DOM元素
         const poemCard = document.getElementById('poemCard');
@@ -354,6 +433,7 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
         const totalPoemsElement = document.getElementById('totalPoems');
         const printBtn = document.getElementById('printBtn');
         const shareBtn = document.getElementById('shareBtn');
+        const hyphenationToggle = document.getElementById('hyphenationToggle');
         
         // 暂不从服务器API获取文件列表
         const poemFiles = [
@@ -366,7 +446,7 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
         // 从服务器加载诗歌内容
         async function loadPoemFromFile(filename) {
             try {
-                // 假设诗歌文件放在Oeve A's Poems/poems/目录下
+                // 假设诗歌文件放在explore/poems/目录下
                 const response = await fetch(`poems/${filename}`);
                 if (!response.ok) {
                     throw new Error('文件加载失败');
@@ -391,6 +471,50 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
                     filename
                 };
             }
+        }
+        
+        // 中文智能断字函数
+        function hyphenateChineseText(text, maxLineLength = 15) {
+            if (!text || text.length === 0) return text;
+            
+            // 中文标点符号（不需要在标点前断字）
+            const punctuation = '，。！？；：「」『』【】、（）《》';
+            
+            let result = '';
+            let currentLine = '';
+            
+            // 遍历每个字符
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                currentLine += char;
+                
+                // 检查是否需要换行
+                if (currentLine.length >= maxLineLength) {
+                    // 如果当前字符是标点，直接换行
+                    if (punctuation.includes(char)) {
+                        result += currentLine + '\n';
+                        currentLine = '';
+                    } 
+                    // 否则在字符后添加连字符并换行
+                    else {
+                        // 检查下一个字符是否是标点，如果是则不添加连字符
+                        if (i + 1 < text.length && punctuation.includes(text[i + 1])) {
+                            result += currentLine + '\n';
+                            currentLine = '';
+                        } else {
+                            result += currentLine + '-\n';
+                            currentLine = '';
+                        }
+                    }
+                }
+            }
+            
+            // 添加最后一行
+            if (currentLine) {
+                result += currentLine;
+            }
+            
+            return result;
         }
         
         // 加载所有诗歌
@@ -428,10 +552,14 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             // 更新页面指示器
             currentPageElement.textContent = index + 1;
             
+            // 处理诗歌内容（应用智能断字）
+            const processedContent = hyphenationEnabled ? 
+                hyphenateChineseText(poem.content) : poem.content;
+            
             // 更新诗歌卡片内容
             poemCard.innerHTML = `
                 <h2 class="poem-title">${poem.title}</h2>
-                <div class="poem-content">${poem.content}</div>
+                <div class="poem-content">${processedContent}</div>
             `;
             
             // 更新箭头状态
@@ -526,6 +654,13 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             }
         }
         
+        // 切换智能断字功能
+        function toggleHyphenation() {
+            hyphenationEnabled = hyphenationToggle.checked;
+            // 重新显示当前诗歌以应用新的断字设置
+            showPoem(currentPoemIndex);
+        }
+        
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             // 加载所有诗歌
@@ -551,6 +686,9 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
             // 分享按钮点击事件
             shareBtn.addEventListener('click', sharePoem);
             
+            // 智能断字切换事件
+            hyphenationToggle.addEventListener('change', toggleHyphenation);
+            
             // 键盘导航支持
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft' && currentPoemIndex > 0) {
@@ -562,7 +700,4 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
         });
     </script>
 </body>
-<footer>
-  <p style="color:#5d4037;font-size:8px;">All Rights Reserved © 2025</p>
-</footer>
 </html>
