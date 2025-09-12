@@ -357,19 +357,19 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
         // 暂不从服务器API获取文件列表
         const poemFiles = [
           '诗人.txt',
-          //'不知之罪.txt',
-          //'車.txt',
+          '不知之罪.txt',
+          '車.txt',
           '要走出的路.txt',
           '纵横.txt',
           '心感温度.txt',
           '有 难.txt',
           '可是.txt',
-          //'灯塔水母.txt',
-          //'为形.txt',
+          '灯塔水母.txt',
+          '为形.txt',
         ];
         
         // 从服务器加载诗歌内容
-        async function loadPoemFromFile(filename) {ju
+        async function loadPoemFromFile(filename) {
             try {
                 // 假设诗歌文件放在Oeve A's Poems/poems/目录下
                 const response = await fetch(`poems/${filename}`);
