@@ -39,7 +39,6 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
 <head>
   <title>KOOKFOOL</title>
   <link rel="shortcut icon" href="favicon.ico">
-
   <meta name="description" content="Display the artwork 'Truth Taiji'.">
   <meta name="keywords" content="Taiji, yin-yang, Tao">
   <meta name="author" content="Oeve A">
@@ -118,9 +117,54 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
 <body>
   <div id='container'></div>
   <button onclick='svgSnapshot()'>Export SVG</button>
-  <a href='javascript:void(0)' id='dlbtn'><button>Export STL</button></a>
+  <a href='javascript:void(0)' id='dlbtn'><button style="color: black;">Export STL</button></a>
   <div style='display: none;' id='svg'></div>
   <img id='svg2'></img>
+
+  <!-- bgMusic -->
+  <!--
+  Music Copyright Statement
+  The background music used on this website is for personal learning, research, and appreciation purposes only (non-commercial use), 
+  and the music copyright belongs to the original creators and legal rights holders(It was a long time ago when I unexpectedly heard this song,
+  and I was immediately moved by it, so I am happy to use it as the background music for this personal website. It's really suitable).
+
+  According to Article 24 of the Copyright Law of the People's Republic of China, we promise to:
+    Not obtaining economic benefits directly or indirectly through this music;
+    Not harming the legitimate rights and interests of the copyright owner;
+    Complete annotation of music source and author information (as shown below).
+    Title: "Your Bones" | Author: Of Monsters And Men | Source: Online
+
+  Declaration Channel of Rights Holder:
+    If you are a music copyright owner and believe that the use of this website infringes on your rights, please contact us through the following methods:
+      Email： nsk010204@outlook.com
+    After receiving a valid ownership certificate, we will immediately remove the relevant music.
+  -->
+  <audio id="bgMusic" loop>
+    <source src="Of Monsters And Men-Your Bones.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="musicControls">
+    <button id="toggleBtn">Play Music</button>
+    <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
+  </div>
+
+  <a href="/Poems" class="btn">Poems</a>
+  <a href="/Games" class="btn">Games</a>
+
+  <script>
+    const audio = new Audio("Of Monsters And Men-Your Bones.mp3");
+    audio.loop = true;
+
+    document.getElementById('toggleBtn').addEventListener('click', () => {
+      audio[audio.paused ? 'play' : 'pause']();
+      toggleBtn.textContent = audio.paused ? "Play Music" : "Pause Music";
+    });
+
+    document.getElementById('volume').addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+    });
+  </script>
+
   <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js'></script>
   <script src='https://cdn.rawgit.com/mrdoob/three.js/r92/examples/js/loaders/ColladaLoader.js'></script>
   <script src='https://cdn.rawgit.com/mrdoob/three.js/r92/examples/js/controls/OrbitControls.js'></script>
@@ -216,47 +260,6 @@ FFFFFFFFFF                OOOOOOOOO           OOOOOOOOO      LLLLLLLLLLLLLLLLLLL
     }
   </script>
 
-  <!-- bgMusic -->
-  <!--
-Music Copyright Statement
-The background music used on this website is for personal learning, research, and appreciation purposes only (non-commercial use), and the music copyright belongs to the original creators and legal rights holders(It was a long time ago when I unexpectedly heard this song, and I was immediately moved by it, so I am happy to use it as the background music for this personal website. It's really suitable).
-
-According to Article 24 of the Copyright Law of the People's Republic of China, we promise to:
-Not obtaining economic benefits directly or indirectly through this music;
-Not harming the legitimate rights and interests of the copyright owner;
-Complete annotation of music source and author information (as shown below).
-Title: "Your Bones" | Author: Of Monsters And Men | Source: Online
-
-Declaration Channel of Rights Holder:
-If you are a music copyright owner and believe that the use of this website infringes on your rights, please contact us through the following methods:
-Email： nsk010204@outlook.com
-After receiving a valid ownership certificate, we will immediately remove the relevant music.
--->
-  <audio id="bgMusic" loop>
-    <source src="Of Monsters And Men-Your Bones.mp3" type="audio/mpeg">
-  </audio>
-
-  <div id="musicControls">
-    <button id="toggleBtn">Play Music</button>
-    <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
-  </div>
-
-  <script>
-    const audio = new Audio("Of Monsters And Men-Your Bones.mp3");
-    audio.loop = true;
-
-    document.getElementById('toggleBtn').addEventListener('click', () => {
-      audio[audio.paused ? 'play' : 'pause']();
-      toggleBtn.textContent = audio.paused ? "Play Music" : "Pause Music";
-    });
-
-    document.getElementById('volume').addEventListener('input', (e) => {
-      audio.volume = e.target.value;
-    });
-  </script>
-
-  <a href="/Poems" class="btn">Poems</a>
-  <a href="/Games" class="btn">Games</a>
 
   <footer>
     <p style="color:black;font-size:8px;">All Rights Reserved © 2025</p>
